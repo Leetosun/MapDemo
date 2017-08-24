@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="blue">#04a0f0</color>
+
+    <color name="text_red">#E60012</color>
+    <color name="text_black">#393845</color>
+    <color name="text_gray">#9B96A3</color>
+    <color name="task_red_light">#F099A1</color>
+
+    <color name="colorPrimary">#38366b</color>
+    <color name="colorPrimaryDark">#37366a</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="province_line_border">#C7C7C7</color>
+
+    <color name="colorPrimary1">#142845</color>
+    <color name="lineBlue"> #2979FF</color>
+    <color name="colorBack_blue">#2b406c</color>
+    <color name="colorWhite">#14ffffff</color>
+    <color name="colorWhite0.3">#4dffffff</color>
+    <color name="colorWhite0.03">#08ffffff</color>
+    <color name="colorWhite0.22">#38ffffff</color>
+    <color name="colorBlack0.7">#a0070113</color>
+    <color name="colorBlack0.3">#4d000000</color>
+    <color name="blackTransparent">#4b000000</color>
+    <color name="colorNext">#80ebe11b</color>
+    <color name="colorTxtYellow">#EFE419</color>
+
+    <!--字体颜色-->
+    <color name="colorPrimaryText">#212121</color>
+    <color name="colorSecondaryText">#757575</color>
+    <!--分割线颜色-->
+    <color name="colorDividerPrimary">#BDBDBD</color>
+    <!--背景颜色-->
+    <color name="background">#f4f4f4</color>
+    <!--透明背景颜色-->
+    <color name="transparentBackground">#80000000</color>
+    <!--系统默认背景颜色-->
+    <color name="bg">#f9f9f9</color>
+    <!--常用颜色-->
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="gray">#eaeaea</color>
+    <color name="orange">#EFE419</color>
+    <color name="gray02">#eeeeee</color>
+    <color name="green">#599434</color>
+    <color name="red">#ff0000</color>
+    <color name="blueTransparent">#803e5271</color>
+
+    <color name="hint">#D6D6D6</color>
+    <color name="shadow">#aa000000</color>
+
+    <color name="theme">#4caf50</color>
+    <color name="login">#3cba11</color>
+    <color name="orange1">#ffcc9a</color>
+    <color name="orange2">#ffffcc</color>
+    <color name="transparent">#00000000</color>
+    <!--下拉刷新颜色-->
+
+    <!--扫一扫-->
+    <color name="contents_text">#ff000000</color>
+    <color name="encode_view">#ffffffff</color>
+    <!--<color name="possible_result_points">#c0ffbd21</color> &lt;!&ndash; Android standard ICS color &ndash;&gt;-->
+    <color name="result_minor_text">#ffc0c0c0</color>
+    <color name="result_points">#c099cc00</color> <!-- Android standard ICS color -->
+    <color name="result_text">#ffffffff</color>
+    <color name="result_view">#b0000000</color>
+    <color name="status_text">#ffffffff</color>
+
+</resources>

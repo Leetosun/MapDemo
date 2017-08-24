@@ -1,0 +1,12 @@
+package com.leomo.re.map.bean
+
+/**
+ * Created by LeeToSun on 2017/8/24 0024
+ */
+
+class TrackBean {
+
+    var lat: String? = null
+
+    var lng: String? = null
+}
