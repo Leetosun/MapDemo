@@ -3,9 +3,6 @@ package com.leomo.re.map.base
 import com.google.gson.annotations.SerializedName
 
 /**
- * 作者：yuanYe创建于2016/11/14
- * QQ：962851730
-
  * 服务端接口返回实体基本类, 对应后端制定的json串格式
  */
 class BaseBean {
