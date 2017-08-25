@@ -37,11 +37,12 @@ import com.amap.api.services.geocoder.GeocodeSearch;
 import com.amap.api.services.geocoder.RegeocodeQuery;
 import com.amap.api.services.geocoder.RegeocodeResult;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.leomo.re.map.bean.TrackBean;
-import com.leomo.re.map.bean.TrackBeanList;
 import com.leomo.re.map.service.LocationService;
 import com.leomo.re.map.util.MapUtil;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -259,38 +260,51 @@ public class TaskMapActivity extends AppCompatActivity implements LocationSource
      * 获取轨迹
      */
     public void netGetTrack() {
-        TrackBeanList taskTrackBean = new Gson().fromJson(json, TrackBeanList.class);
+//        RequestCall call = OkHttpUtils.get().url("").build();
+//        call.execute(new BaseCallBack() {
+//            @Override
+//            public void onResponse(String response, int id) {
+//                super.onResponse(response, id);
+                Gson gson = new Gson();
+                Type type = new TypeToken<List<TrackBean>>() {
+                }.getType();
+                List<TrackBean> list = gson.fromJson(json, type);
 
-        List<LatLng> allLatLng = new ArrayList<>();
-        for (int i = 0; i < taskTrackBean.getList().size(); i++) {
-            //设置轨迹起点
-            LatLng startLatLng = new LatLng(Double.valueOf(taskTrackBean.getList().get(0).getLat()),
-                    Double.valueOf(taskTrackBean.getList().get(0).getLng()));
-            MapUtil.addMarkerOptions(aMap, startLatLng, getResources(), R.drawable.ic_beginning_point);
+                List<LatLng> allLatLng = new ArrayList<>();
+                for (int i = 0; i < list.size(); i++) {
+                    if (null == list.get(i)) {
+                        continue;
+                    }
+                    //设置轨迹起点
+                    LatLng startLatLng = new LatLng(Double.valueOf(list.get(0).getLat()),
+                            Double.valueOf(list.get(0).getLng()));
+                    MapUtil.addMarkerOptions(aMap, startLatLng, getResources(), R.drawable.ic_beginning_point);
 
 
-            //设置轨迹终点
-            int last = taskTrackBean.getList().size() - 1;
-            LatLng endLatLng = new LatLng(Double.valueOf(taskTrackBean.getList().get(last).getLat()),
-                    Double.valueOf(taskTrackBean.getList().get(last).getLng()));
-            MapUtil.addMarkerOptions(aMap, endLatLng, getResources(), R.drawable.ic_finishing_point);
+                    //设置轨迹终点
+                    int last = list.size() - 1;
+                    LatLng endLatLng = new LatLng(Double.valueOf(list.get(last).getLat()),
+                            Double.valueOf(list.get(last).getLng()));
+                    MapUtil.addMarkerOptions(aMap, endLatLng, getResources(), R.drawable.ic_finishing_point);
 
-            //轨迹线条
-            List<LatLng> latLngs = new ArrayList<>();
-            for (TrackBean listBean : taskTrackBean.getList()) {
-                latLngs.add(new LatLng(Double.valueOf(listBean.getLat()), Double.valueOf(listBean.getLng())));
-                allLatLng.add(new LatLng(Double.valueOf(listBean.getLat()), Double.valueOf(listBean.getLng())));
-            }
-            MapUtil.addPolyline(aMap, latLngs, 10, TaskMapActivity.this, R.color.task_red_light);
-        }
+                    //轨迹线条
+                    List<LatLng> latLngs = new ArrayList<>();
+                    for (TrackBean listBean : list) {
+                        latLngs.add(new LatLng(Double.valueOf(listBean.getLat()), Double.valueOf(listBean.getLng())));
+                        allLatLng.add(new LatLng(Double.valueOf(listBean.getLat()), Double.valueOf(listBean.getLng())));
+                    }
+                    MapUtil.addPolyline(aMap, latLngs, 20, R.drawable.arrow_track);
+                }
 
-        //视角移动
-        LatLngBounds.Builder builder = LatLngBounds.builder();
+                //视角移动
+                LatLngBounds.Builder builder = LatLngBounds.builder();
 
-        for (int i = 0; i < allLatLng.size(); i++) {
-            builder.include(new LatLng(allLatLng.get(i).latitude, allLatLng.get(i).longitude));
-        }
-        aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 5));
+                for (int i = 0; i < allLatLng.size(); i++) {
+                    builder.include(new LatLng(allLatLng.get(i).latitude, allLatLng.get(i).longitude));
+                }
+                aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 5));
+//            }
+//        });
 
     }
 
@@ -353,44 +367,150 @@ public class TaskMapActivity extends AppCompatActivity implements LocationSource
 
     @Override
     public void onMapLoaded() {
-        // TODO 加载时将地图移动至任务轨迹
+        // TODO 加载时
     }
 
-    String json = "{\n" +
-            "    \"list\": [\n" +
-            "            {\n" +
-            "                \"lng\": \"125.310282\",\n" +
-            "                \"lat\": \"43.823729\"\n" +
-            "            },\n" +
-            "            {\n" +
-            "                \"lng\": \"125.312363\",\n" +
-            "                \"lat\": \"43.824255\"\n" +
-            "            },\n" +
-            "\t\t\t{\n" +
-            "                \"lng\": \"125.312749\",\n" +
-            "                \"lat\": \"43.825184\"\n" +
-            "            },\n" +
-            "\t\t\t{\n" +
-            "                \"lng\": \"125.313264\",\n" +
-            "                \"lat\": \"43.826004\"\n" +
-            "            },\n" +
-            "\t\t\t{\n" +
-            "                \"lng\": \"125.314831\",\n" +
-            "                \"lat\": \"43.827893\"\n" +
-            "            },\n" +
-            "\t\t\t{\n" +
-            "                \"lng\": \"125.316429\",\n" +
-            "                \"lat\": \"43.829665\"\n" +
-            "            },\n" +
-            "\t\t\t{\n" +
-            "                \"lng\": \"125.319884\",\n" +
-            "                \"lat\": \"43.831972\"\n" +
-            "            },\n" +
-            "\t\t\t{\n" +
-            "                \"lng\": \"125.322952\",\n" +
-            "                \"lat\": \"43.832165\"\n" +
-            "            }\n" +
-            "        ]\n" +
-            "}";
+    String json = "[\n" +
+            "  {\n" +
+            "    \"lng\": \"125.307361\",\n" +
+            "    \"lat\": \"43.822424\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.307548\",\n" +
+            "    \"lat\": \"43.822252\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.307766\",\n" +
+            "    \"lat\": \"43.821808\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.307815\",\n" +
+            "    \"lat\": \"43.821616\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.307815\",\n" +
+            "    \"lat\": \"43.821616\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.308037\",\n" +
+            "    \"lat\": \"43.821261\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.308147\",\n" +
+            "    \"lat\": \"43.820993\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.308321\",\n" +
+            "    \"lat\": \"43.820838\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.308321\",\n" +
+            "    \"lat\": \"43.820838\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.309604\",\n" +
+            "    \"lat\": \"43.820609\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.309351\",\n" +
+            "    \"lat\": \"43.820266\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.308928\",\n" +
+            "    \"lat\": \"43.819746\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.308532\",\n" +
+            "    \"lat\": \"43.819378\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.308453\",\n" +
+            "    \"lat\": \"43.819191\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.308343\",\n" +
+            "    \"lat\": \"43.819065\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.30821\",\n" +
+            "    \"lat\": \"43.81886\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.307869\",\n" +
+            "    \"lat\": \"43.818321\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.307551\",\n" +
+            "    \"lat\": \"43.818056\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.307685\",\n" +
+            "    \"lat\": \"43.818061\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.30817\",\n" +
+            "    \"lat\": \"43.817786\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.30817\",\n" +
+            "    \"lat\": \"43.817786\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.308674\",\n" +
+            "    \"lat\": \"43.817619\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.309454\",\n" +
+            "    \"lat\": \"43.817393\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.309751\",\n" +
+            "    \"lat\": \"43.817331\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.31021\",\n" +
+            "    \"lat\": \"43.817129\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.310379\",\n" +
+            "    \"lat\": \"43.817061\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.310747\",\n" +
+            "    \"lat\": \"43.816971\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.311001\",\n" +
+            "    \"lat\": \"43.816887\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.311791\",\n" +
+            "    \"lat\": \"43.816925\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.311791\",\n" +
+            "    \"lat\": \"43.816925\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.31199\",\n" +
+            "    \"lat\": \"43.817263\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.312222\",\n" +
+            "    \"lat\": \"43.817466\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.312236\",\n" +
+            "    \"lat\": \"43.817587\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.312801\",\n" +
+            "    \"lat\": \"43.818409\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"lng\": \"125.313181\",\n" +
+            "    \"lat\": \"43.818873\"\n" +
+            "  }\n" +
+            "]";
 
 }

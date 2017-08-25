@@ -7,8 +7,6 @@ import android.widget.Toast;
 
 import com.zhy.http.okhttp.callback.Callback;
 
-import org.json.JSONObject;
-
 import okhttp3.Call;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -18,7 +16,7 @@ import okhttp3.Response;
  * <p>
  * OkHTTP请求基础回掉函数, 继承自okhttp-callback, 并实现其中的方法
  */
-public abstract class BaseCallBack extends Callback<BaseBean> {
+public abstract class BaseCallBack extends Callback<String> {
     ProgressDialog dialog;
     public Activity activity;
     public Callback callback;//用于显示正在加载中的回调
@@ -46,7 +44,7 @@ public abstract class BaseCallBack extends Callback<BaseBean> {
     }
 
     @Override
-    public BaseBean parseNetworkResponse(Response response, int id) throws Exception {
+    public String parseNetworkResponse(Response response, int id) throws Exception {
         return parseNetworkResponse(response);
     }
 
@@ -57,7 +55,7 @@ public abstract class BaseCallBack extends Callback<BaseBean> {
     }
 
     @Override
-    public void onResponse(BaseBean response, int id) {
+    public void onResponse(String response, int id) {
         onResponse(response);
     }
 
@@ -87,17 +85,9 @@ public abstract class BaseCallBack extends Callback<BaseBean> {
     }
 
     // 解析服务端响应数据
-    public BaseBean parseNetworkResponse(Response response) throws Exception {
+    public String parseNetworkResponse(Response response) throws Exception {
         String s = response.body().string();
-        Log.i("BaseCallBack", String.format("parseNetworkResponse : %s", s));
-        BaseBean bean = new BaseBean();
-        JSONObject jsonObject = new JSONObject(s);
-        bean.setMessage(jsonObject.getString("msg"));
-        bean.setCode(jsonObject.getString("code"));
-        if (jsonObject.getString("data") != null) {
-            bean.setData(jsonObject.getString("data"));
-        }
-        return bean;
+        return s;
     }
 
     // 连接错误
@@ -121,7 +111,7 @@ public abstract class BaseCallBack extends Callback<BaseBean> {
         }
     }
 
-    public void onResponse(BaseBean response) {
+    public void onResponse(String response) {
     }
 
     public interface Callback {

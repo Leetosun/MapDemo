@@ -93,4 +93,17 @@ public class MapUtil {
                 addAll(latLngList).width(width).color(ContextCompat.getColor(context, color)));
     }
 
+    /**
+     * 绘制轨迹
+     *
+     * @param aMap       地图对象
+     * @param latLngList 经纬度列表
+     * @param width      轨迹宽度
+     * @param resource   轨迹图片
+     */
+    public static void addPolyline(AMap aMap, List<LatLng> latLngList, float width, int resource) {
+        aMap.addPolyline(new PolylineOptions().
+                addAll(latLngList).width(width).setCustomTexture(BitmapDescriptorFactory.fromResource(resource)));
+    }
+
 }
